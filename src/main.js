@@ -81,7 +81,7 @@ class Server {
     async start() {
         await this.connectDB();
         //this.options.port, this.options.host,
-        this.http.listen(this.options.port, () => {
+        this.http.listen(this.options.port, this.options.host, () => {
             console.log(`[SERVER] http://${this.options.host}:${this.options.port}/`);
         });
     }
@@ -138,8 +138,14 @@ class Server {
     }
 }
 
+const SERVER_ARGS = {
+    HOST: process.argv[2] ?? "localhost",
+    PORT: process.argv[3] ?? 7777
+};
+
+
 const server = new Server( 
-    { port: 7777, host: "11.10.5.5" }, 
+    { port: SERVER_ARGS.PORT, host: SERVER_ARGS.HOST }, 
     [
         { path: '/collect', router: collectRouter},
         {path: '/info', router: infoRouter}
